@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>二维码生成与识别</title>
+    <script src="https://cdn.staticfile.org/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <script src="https://cdn.staticfile.org/jsQR/1.3.1/jsQR.min.js"></script>
+</head>
+<body>
+    <input type="text" id="text-input" placeholder="输入文本生成二维码" />
+    <button onclick="generateAndDownloadQRCode()">生成二维码</button>
+    <br>
+    <a id="download-link" style="display: none;">下载二维码</a>
+    <br><br>
+
+
+    <canvas id="qr-canvas" style="display: none;"></canvas>
+
+    <script>
+        function generateAndDownloadQRCode() {
+            const text = document.getElementById('text-input').value;
+            const qr = qrcode(0, 'L');
+            qr.addData(text);
+            qr.make();
+
+            // 将生成的二维码转换为DataURL
+            const qrCodeDataURL = qr.createDataURL(6, 4);
+            
+            // 创建图片并添加到页面
+            let qrCodeImage = document.createElement('img');
+            qrCodeImage.src = qrCodeDataURL;
+            qrCodeImage.style.display = 'block';
+            document.body.appendChild(qrCodeImage);
+
+            // 创建下载链接
+            const downloadLink = document.getElementById('download-link');
+            downloadLink.href = qrCodeDataURL;
+            downloadLink.download = 'qrcode.png';
+            downloadLink.innerText = '下载二维码';
+            downloadLink.style.display = 'block';
+        }
+
+    </script>
+</body>
+</html>
